@@ -20,3 +20,28 @@ xhr.onreadystatechange = function() {
 
 xhr.open('GET', 'data/employees.json');
 xhr.send();
+
+/* Getting room data */
+
+var roomRequest = new XMLHttpRequest();
+
+roomRequest.onreadystatechange = function() {
+    if (roomRequest.readyState === 4) {
+        var rooms = JSON.parse(roomRequest.responseText);
+        var availHTML = '<ul class="rooms">';
+        for (var i = 0; i < rooms.length; i += 1) {
+            if (rooms[i].available === true) {
+                availHTML += '<li class="empty">';
+            } else {
+                availHTML += '<li class="full">';
+            }
+            availHTML += rooms[i].room;
+            availHTML += '</li>';
+        }
+        availHTML += '</ul>';
+        document.getElementById('roomList').innerHTML = availHTML;
+    }
+};
+
+roomRequest.open('GET', 'data/rooms.json');
+roomRequest.send();
